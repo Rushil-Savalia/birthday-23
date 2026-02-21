@@ -44,11 +44,6 @@
             z-index: 1;
             overflow: hidden;
             opacity: 0;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: space-around;
-            justify-content: space-around;
-            padding: 20px;
         }
 
         .image-gallery.show {
@@ -56,14 +51,13 @@
         }
 
         .gallery-image {
-            position: relative;
+            position: absolute;
             border-radius: 20px;
             object-fit: cover;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             opacity: 0;
             pointer-events: none;
             animation: slideInImage 0.8s ease-out forwards;
-            flex-shrink: 0;
         }
 
         @keyframes slideInImage {
@@ -80,60 +74,82 @@
         .gallery-image.img1 {
             width: 220px;
             height: 220px;
+            left: 30px;
+            top: 30px;
             animation-delay: 2s;
         }
 
         .gallery-image.img2 {
             width: 210px;
             height: 210px;
+            right: 30px;
+            top: 40px;
             animation-delay: 3s;
         }
 
         .gallery-image.img3 {
             width: 230px;
             height: 230px;
+            left: 30px;
+            bottom: 30px;
             animation-delay: 4s;
         }
 
         .gallery-image.img4 {
             width: 220px;
             height: 220px;
+            right: 30px;
+            bottom: 40px;
             animation-delay: 5s;
         }
 
         .gallery-image.img5 {
             width: 200px;
             height: 200px;
+            left: 30px;
+            top: 280px;
             animation-delay: 6s;
         }
 
         .gallery-image.img6 {
             width: 205px;
             height: 205px;
+            right: 30px;
+            top: 295px;
             animation-delay: 7s;
         }
 
         .gallery-image.img7 {
             width: 215px;
             height: 215px;
+            left: 50%;
+            bottom: 200px;
+            transform: translateX(-50%);
             animation-delay: 8s;
         }
 
         .gallery-image.img8 {
             width: 210px;
             height: 210px;
+            left: 30px;
+            top: 520px;
             animation-delay: 9s;
         }
 
         .gallery-image.img9 {
             width: 220px;
             height: 220px;
+            left: 50%;
+            bottom: 35px;
+            transform: translateX(-50%);
             animation-delay: 10s;
         }
 
         .gallery-image.img10 {
             width: 190px;
             height: 190px;
+            right: 30px;
+            top: 540px;
             animation-delay: 11s;
         }
 
