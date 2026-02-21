@@ -1,1 +1,321 @@
-<!DOCTYPE html><html><head><title>My Website</title></head><body><h1>Anniversary proj</h1></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birth Day Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Main content - initially hidden */
+        .main-content {
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-content.visible {
+            display: block;
+        }
+
+        .main-content h1 {
+            font-size: 4em;
+            margin: 40px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .main-content p {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        /* Confetti background */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Blurred background */
+        body.locked {
+            overflow: hidden;
+        }
+
+        .blur-background {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        .blur-background.active {
+            display: block;
+        }
+
+        /* Password popup */
+        .password-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c92a2a 100%);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 3px solid #ff9ff3;
+        }
+
+        .password-popup.active {
+            display: block;
+            animation: popupSlide 0.5s ease-out;
+        }
+
+        @keyframes popupSlide {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup-title {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .balloon {
+            display: inline-block;
+            font-size: 2em;
+            margin: 0 5px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .balloon:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .balloon:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .balloon:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .popup-subtitle {
+            font-size: 1.2em;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .input-group input::placeholder {
+            color: #ccc;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ffd93d 0%, #ffb700 100%);
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-message {
+            color: #ffe66d;
+            margin-top: 15px;
+            font-size: 0.95em;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Blur Background -->
+    <div class="blur-background active"></div>
+
+    <!-- Password Popup -->
+    <div class="password-popup active">
+        <div class="popup-title">
+            <span class="balloon">🎈</span>
+            Happy Birthday!
+            <span class="balloon">🎈</span>
+        </div>
+        <div class="popup-subtitle">🎉 Enter the password to celebrate 🎉</div>
+        <div class="input-group">
+            <input 
+                type="password" 
+                id="passwordInput" 
+                placeholder="Enter password..."
+                autocomplete="off"
+            >
+        </div>
+        <button class="submit-btn" onclick="checkPassword()">Unlock</button>
+        <div class="error-message" id="errorMessage">❌ Wrong password! Try again.</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>🎂 Happy Birthday, Sachi! 🎂</h1>
+        <p>🎉 You're 23 now! 🎉</p>
+        <p style="font-size: 3em; margin: 40px 0;">🎊🎈🎁🎊</p>
+        <p>Wishing you an amazing day filled with joy, laughter, and wonderful memories!</p>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = "Sachi-is-23";
+
+        function checkPassword() {
+            const input = document.getElementById("passwordInput");
+            const errorMessage = document.getElementById("errorMessage");
+            
+            if (input.value === CORRECT_PASSWORD) {
+                // Hide popup and blur
+                document.querySelector(".password-popup").classList.remove("active");
+                document.querySelector(".blur-background").classList.remove("active");
+                document.querySelector(".main-content").classList.add("visible");
+                document.body.classList.remove("locked");
+                
+                // Create confetti effect
+                createConfetti();
+            } else {
+                // Show error and shake
+                errorMessage.classList.add("show");
+                input.classList.add("shake");
+                input.value = "";
+                
+                setTimeout(() => {
+                    errorMessage.classList.remove("show");
+                    input.classList.remove("shake");
+                }, 500);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ["#ff6b6b", "#ffd93d", "#6bcf7f", "#4d96ff", "#c44569"];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = Math.random() * 100 + "%";
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + "s";
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById("passwordInput").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                checkPassword();
+            }
+        });
+
+        // Focus on input when page loads
+        window.addEventListener("load", function() {
+            document.getElementById("passwordInput").focus();
+        });
+    </script>
+</body>
+</html>
