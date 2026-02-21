@@ -152,10 +152,12 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             scrollbar-width: thin;
             scrollbar-color: #ff6b6b #f0f0f0;
+            display: none;
         }
 
         .envelope-flap.open ~ .letter-paper {
             transform: translate(-50%, -50%) translateY(0);
+            display: block;
         }
 
         .letter-paper::-webkit-scrollbar {
@@ -587,30 +589,15 @@
     <script>
         let currentPassword = null;
 
-        // Fetch password from public API (randomuser.me)
-        async function fetchPassword() {
-            try {
-                // Fetch a random user from the public Random User API
-                const response = await fetch('https://randomuser.me/api/');
-                const data = await response.json();
-                
-                // Extract first and last name
-                const firstName = data.results[0].name.first;
-                const lastName = data.results[0].name.last;
-                
-                // Get current 5-minute interval to make password change every 5 minutes
-                const interval = Math.floor(Date.now() / 300000); // 300000ms = 5 minutes
-                
-                // Combine all to create dynamic password
-                currentPassword = `${firstName}-${lastName}-${interval}`;
-                console.log('Password fetched from Random User API');
-            } catch (error) {
-                console.error('Failed to fetch password from API:', error);
-                // Fallback: use a simple deterministic password from time
-                const interval = Math.floor(Date.now() / 300000);
-                currentPassword = `birthday-${interval}`;
-                console.log('Using fallback password');
-            }
+        // Generate password from current date
+        function generatePassword() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            
+            // Password format: YYYY-MM-DD (changes daily)
+            return `${year}-${month}-${day}`;
         }
 
         function checkPassword() {
@@ -618,9 +605,7 @@
             const errorMessage = document.getElementById("errorMessage");
             
             if (!currentPassword) {
-                errorMessage.textContent = '⚠️ Password not loaded. Please refresh the page.';
-                errorMessage.classList.add("show");
-                return;
+                currentPassword = generatePassword();
             }
             
             if (input.value === currentPassword) {
@@ -731,9 +716,9 @@
             }
         });
 
-        // Fetch password and focus on input when page loads
+        // Generate password and focus on input when page loads
         window.addEventListener("load", function() {
-            fetchPassword();
+            currentPassword = generatePassword();
             document.getElementById("passwordInput").focus();
         });
     </script>
