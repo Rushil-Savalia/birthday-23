@@ -58,6 +58,11 @@
             opacity: 0;
             pointer-events: none;
             animation: slideInImage 0.8s ease-out forwards;
+            animation-play-state: paused;
+        }
+
+        .gallery-image.animate {
+            animation-play-state: running;
         }
 
         @keyframes slideInImage {
@@ -158,13 +163,13 @@
         /* Closed Letter Envelope */
         .letter-envelope {
             position: relative;
-            width: 600px;
-            height: 320px;
+            width: 630px;
+            height: 380px;
             cursor: pointer;
             transition: filter 0.3s ease;
             filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.25));
             z-index: 100;
-            margin-top: -40px;
+            margin-top: -100px;
         }
 
         .letter-envelope:hover {
@@ -736,13 +741,8 @@
 
         // Generate password from current date
         function generatePassword() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            
-            // Password format: YYYY-MM-DD (changes daily)
-            return `${year}-${month}-${day}`;
+            // Password format: MM-DD-YYYY
+            return '03-03-2026';
         }
 
         function checkPassword() {
@@ -763,6 +763,12 @@
                 // Show images with staggered animations
                 const imageGallery = document.querySelector(".image-gallery");
                 imageGallery.classList.add("show");
+                
+                // Start image animations after password entry
+                const galleryImages = document.querySelectorAll(".gallery-image");
+                galleryImages.forEach(img => {
+                    img.classList.add("animate");
+                });
                 
                 // Create fireworks and confetti
                 createFireworks();
