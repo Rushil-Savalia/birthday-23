@@ -32,6 +32,52 @@
             justify-content: center;
         }
 
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 200px;
+            background-image: url('IMG_0604.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .main-content::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            background-image: url('IMG_3214.JPG');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .main-content {
+            background-image: 
+                url('IMG_3657.JPG'),
+                url('IMG_4525.JPG'),
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size:
+                200px 200px,
+                200px 200px,
+                cover;
+            background-position:
+                bottom 20px left 20px,
+                bottom 20px right 20px,
+                center;
+            background-repeat: no-repeat, no-repeat, no-repeat;
+        }
+
         .main-content.visible {
             display: flex;
         }
@@ -39,11 +85,12 @@
         /* Closed Letter Envelope */
         .letter-envelope {
             position: relative;
-            width: 500px;
+            width: 600px;
             height: 320px;
             cursor: pointer;
             transition: filter 0.3s ease;
             filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.25));
+            z-index: 100;
         }
 
         .letter-envelope:hover {
@@ -92,8 +139,8 @@
             position: absolute;
             width: 0;
             height: 0;
-            border-left: 250px solid transparent;
-            border-right: 250px solid transparent;
+            border-left: 300px solid transparent;
+            border-right: 300px solid transparent;
             border-top: 160px solid #ff6b6b;
             top: 0;
             left: 0;
@@ -137,7 +184,7 @@
         /* Letter sliding out */
         .letter-paper {
             position: absolute;
-            width: 460px;
+            width: 560px;
             height: 280px;
             background: white;
             border: 2px solid #ddd;
