@@ -205,6 +205,7 @@
             left: 20px;
             transform: translateY(-50%);
             z-index: 20;
+            transition: opacity 0.3s;
         }
 
         .to-label {
@@ -214,6 +215,13 @@
             transform: translateX(-50%);
             font-size: 1em;
             z-index: 20;
+            transition: opacity 0.3s;
+        }
+
+        .envelope-flap.open ~ .envelope-body .from-label,
+        .envelope-flap.open ~ .envelope-body .to-label {
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Envelope flap (triangular) */
@@ -221,9 +229,9 @@
             position: absolute;
             width: 0;
             height: 0;
-            border-left: 300px solid transparent;
-            border-right: 300px solid transparent;
-            border-top: 160px solid #FF1493;
+            border-left: 315px solid transparent;
+            border-right: 315px solid transparent;
+            border-top: 190px solid #FF1493;
             top: 0;
             left: 0;
             z-index: 10;
@@ -266,8 +274,8 @@
         /* Letter sliding out */
         .letter-paper {
             position: absolute;
-            width: 560px;
-            height: 280px;
+            width: 590px;
+            height: 320px;
             background: white;
             border: 2px solid #ddd;
             border-radius: 3px;
@@ -646,7 +654,7 @@
         <div class="letter-envelope" id="letterEnvelope">
             <div class="envelope-body">
                 <span class="envelope-label from-label">From Rushil</span>
-                <span class="envelope-label to-label">To Sachi</span>
+                <span class="envelope-label to-label">To Sachi ❤️</span>
             </div>
             <div class="envelope-flap" id="envelopeFlap"></div>
             <div class="envelope-seal">R + S</div>
