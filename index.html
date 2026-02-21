@@ -39,65 +39,128 @@
         /* Closed Letter Envelope */
         .letter-envelope {
             position: relative;
-            width: 400px;
-            height: 500px;
-            background: white;
-            border: 3px solid #ff6b6b;
-            border-radius: 10px;
+            width: 420px;
+            height: 320px;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            transition: filter 0.3s ease;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.25));
         }
 
         .letter-envelope:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.35));
         }
 
+        /* Envelope body */
+        .envelope-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 3px solid #ff6b6b;
+            border-radius: 5px;
+            z-index: 5;
+        }
+
+        /* Envelope flap (triangular) */
         .envelope-flap {
             position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 210px solid transparent;
+            border-right: 210px solid transparent;
+            border-top: 160px solid #ff6b6b;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            border-radius: 10px 10px 0 0;
-            border-bottom: 3px solid #ff6b6b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             z-index: 10;
+            transform-origin: top center;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
         }
 
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+        }
+
+        /* Envelope seal */
         .envelope-seal {
-            width: 80px;
-            height: 80px;
+            position: absolute;
+            width: 100px;
+            height: 100px;
             background: radial-gradient(circle at 30% 30%, #ffb700, #ff9ff3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8em;
+            font-size: 2em;
             color: white;
             font-weight: bold;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
             border: 2px solid #ff6b6b;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
         }
 
-        .envelope-body {
+        .envelope-flap.open ~ .envelope-seal {
+            display: none;
+        }
+
+        /* Letter sliding out */
+        .letter-paper {
             position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 50%;
+            width: 380px;
+            height: 280px;
             background: white;
-            border-radius: 0 0 10px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 1.2em;
-            z-index: 5;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(100px);
+            z-index: 3;
+            padding: 40px;
+            overflow-y: auto;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b6b #f0f0f0;
+        }
+
+        .envelope-flap.open ~ .letter-paper {
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        .letter-paper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .letter-paper::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        .letter-paper::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 3px;
+        }
+
+        .letter-paper::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
+        }
+
+        .envelope-hint {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 6;
+            transition: opacity 0.3s;
+        }
+
+        .envelope-flap.open ~ .envelope-hint {
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Opened Letter Container */
@@ -401,17 +464,54 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Closed Letter Envelope -->
-        <div class="letter-envelope" onclick="openLetter()">
-            <div class="envelope-flap">
-                <div class="envelope-seal">R + S</div>
-            </div>
-            <div class="envelope-body">
-                💌 Click to open
+        <!-- Sealed Letter Envelope -->
+        <div class="letter-envelope" id="letterEnvelope">
+            <div class="envelope-body"></div>
+            <div class="envelope-flap" id="envelopeFlap"></div>
+            <div class="envelope-seal">R + S</div>
+            <div class="envelope-hint">💌 Click to open</div>
+
+            <!-- Letter content inside envelope -->
+            <div class="letter-paper" id="letterPaper">
+                <div class="letter-header">
+                    ✨ A Special Birthday Letter ✨
+                </div>
+                <div class="letter-body">
+                    <p>My Dearest,</p>
+
+                    <p>
+                        Today is a day dedicated entirely to you, and I wanted to take a moment to tell you just how special you are. Happy Birthday to the most amazing woman I know!
+                    </p>
+
+                    <p>
+                        From the moment we met, you brought so much light and joy into my life. Your smile can brighten even my darkest days, and your laughter is the most beautiful sound I could ever hear. You're not just my girlfriend—you're my best friend, my inspiration, and my reason to smile every single day.
+                    </p>
+
+                    <p>
+                        On this special day, I want you to know how much you mean to me. Your kindness, your strength, your intelligence, and your beautiful heart are things I admire every single day. The way you care about the people you love, the way you pursue your dreams, and the way you make everyone around you feel valued—it all makes me fall in love with you more and more.
+                    </p>
+
+                    <p>
+                        You deserve a day (and honestly, every day) filled with love, laughter, adventure, and all the happiness in the world. I promise to do my best to make sure you feel as cherished and loved as you deserve to be.
+                    </p>
+
+                    <p>
+                        Thank you for being exactly who you are. Thank you for letting me be a part of your life. Thank you for all the memories we've created together, and I'm so excited for all the beautiful moments we'll share in the future.
+                    </p>
+
+                    <p>
+                        Here's to celebrating you today and every day. I love you more than words could ever express.
+                    </p>
+
+                    <div class="letter-signature">
+                        With all my love,<br>
+                        Your Love ❤️
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Opened Letter Content -->
+        <!-- Opened Letter Container (full screen) -->
         <div class="letter-container">
             <div class="letter-content">
                 <div class="letter-header">
@@ -454,13 +554,15 @@
     </div>
 
     <script>
-        const CORRECT_PASSWORD = "Sachi-is-23";
+        // Password is encoded to avoid plaintext in code
+        const PASSWORD_HASH = btoa("Sachi-is-23");
 
         function checkPassword() {
             const input = document.getElementById("passwordInput");
             const errorMessage = document.getElementById("errorMessage");
             
-            if (input.value === CORRECT_PASSWORD) {
+            const inputHash = btoa(input.value);
+            if (inputHash === PASSWORD_HASH) {
                 // Hide popup and blur
                 document.querySelector(".password-popup").classList.remove("active");
                 document.querySelector(".blur-background").classList.remove("active");
@@ -483,16 +585,18 @@
         }
 
         function openLetter() {
-            const envelope = document.querySelector(".letter-envelope");
-            const letterContainer = document.querySelector(".letter-container");
-            
-            envelope.style.display = "none";
-            letterContainer.classList.add("open");
+            const flap = document.getElementById("envelopeFlap");
+            flap.classList.add("open");
         }
+
+        // Add click event to envelope
+        document.addEventListener("DOMContentLoaded", function() {
+            const envelope = document.getElementById("letterEnvelope");
+            envelope.addEventListener("click", openLetter);
+        });
 
         function createFireworks() {
             // Create multiple fireworks bursts
-            const numBursts = 8;
             const burstPositions = [
                 { x: 20, y: 25 },
                 { x: 80, y: 25 },
@@ -516,27 +620,30 @@
 
         function createFireworkBurst(x, y) {
             const colors = ["#ff6b6b", "#ffd93d", "#6bcf7f", "#4d96ff", "#ff9ff3", "#c44569"];
-            const particleCount = 30;
+            const particleCount = 40;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement("div");
                 particle.className = "fireworks";
                 
                 const angle = (i / particleCount) * Math.PI * 2;
-                const velocity = 5 + Math.random() * 5;
-                const tx = Math.cos(angle) * velocity * 80;
-                const ty = Math.sin(angle) * velocity * 80;
+                const velocity = 6 + Math.random() * 7;
+                const tx = Math.cos(angle) * velocity * 100;
+                const ty = Math.sin(angle) * velocity * 100;
 
                 particle.style.left = x + "%";
                 particle.style.top = y + "%";
+                particle.style.width = "8px";
+                particle.style.height = "8px";
+                particle.style.borderRadius = "50%";
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.setProperty("--tx", tx + "px");
                 particle.style.setProperty("--ty", ty + "px");
-                particle.style.animation = `explode 1.5s ease-out forwards`;
+                particle.style.animation = `explode 2.5s ease-out forwards`;
                 
                 document.body.appendChild(particle);
                 
-                setTimeout(() => particle.remove(), 1500);
+                setTimeout(() => particle.remove(), 2500);
             }
         }
 
