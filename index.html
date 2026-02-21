@@ -42,6 +42,11 @@
             pointer-events: none;
             z-index: 1;
             overflow: hidden;
+            opacity: 0;
+        }
+
+        .image-gallery.show {
+            opacity: 1;
         }
 
         .gallery-image {
@@ -49,60 +54,79 @@
             border-radius: 20px;
             object-fit: cover;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            opacity: 0.85;
+            opacity: 0;
             pointer-events: none;
+            animation: slideInImage 0.8s ease-out forwards;
+        }
+
+        @keyframes slideInImage {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 0.85;
+                transform: scale(1);
+            }
         }
 
         .gallery-image.img1 {
-            width: 280px;
-            height: 280px;
-            top: 40px;
-            left: 30px;
+            width: 250px;
+            height: 250px;
+            top: 30px;
+            left: 20px;
+            animation-delay: 0s;
         }
 
         .gallery-image.img2 {
-            width: 250px;
-            height: 250px;
-            top: 60px;
-            right: 40px;
+            width: 240px;
+            height: 240px;
+            top: 40px;
+            right: 20px;
+            animation-delay: 1s;
         }
 
         .gallery-image.img3 {
-            width: 300px;
-            height: 300px;
-            bottom: 50px;
-            left: 40px;
+            width: 260px;
+            height: 260px;
+            bottom: 30px;
+            left: 25px;
+            animation-delay: 2s;
         }
 
         .gallery-image.img4 {
-            width: 270px;
-            height: 270px;
-            bottom: 60px;
-            right: 30px;
+            width: 250px;
+            height: 250px;
+            bottom: 40px;
+            right: 20px;
+            animation-delay: 3s;
         }
 
         .gallery-image.img5 {
-            width: 240px;
-            height: 240px;
-            top: 50%;
-            left: 20px;
+            width: 220px;
+            height: 220px;
+            top: 30%;
+            left: 15px;
             transform: translateY(-50%);
+            animation-delay: 4s;
         }
 
         .gallery-image.img6 {
-            width: 260px;
-            height: 260px;
-            top: 50%;
-            right: 20px;
+            width: 230px;
+            height: 230px;
+            top: 30%;
+            right: 15px;
             transform: translateY(-50%);
+            animation-delay: 5s;
         }
 
         .gallery-image.img7 {
-            width: 290px;
-            height: 290px;
-            top: 35%;
+            width: 270px;
+            height: 270px;
+            top: 15%;
             left: 50%;
             transform: translateX(-50%);
+            animation-delay: 6s;
         }
 
         .main-content.visible {
@@ -149,16 +173,19 @@
 
         .from-label {
             position: absolute;
-            top: 20px;
+            top: 50%;
             left: 20px;
+            transform: translateY(-50%);
+            z-index: 20;
         }
 
         .to-label {
             position: absolute;
-            top: 50%;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 1em;
+            z-index: 20;
         }
 
         /* Envelope flap (triangular) */
@@ -698,6 +725,10 @@
                 document.querySelector(".blur-background").classList.remove("active");
                 document.querySelector(".main-content").classList.add("visible");
                 document.body.classList.remove("locked");
+                
+                // Show images with staggered animations
+                const imageGallery = document.querySelector(".image-gallery");
+                imageGallery.classList.add("show");
                 
                 // Create fireworks and confetti
                 createFireworks();
