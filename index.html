@@ -21,41 +21,107 @@
             display: none;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            height: 100vh;
             padding: 40px;
             text-align: center;
             color: white;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .main-content.visible {
-            display: block;
+            display: flex;
         }
 
-        .main-content h1 {
-            font-size: 4em;
-            margin: 40px 0;
+        /* Closed Letter Envelope */
+        .letter-envelope {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border: 3px solid #ff6b6b;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
         }
 
-        .main-content p {
-            font-size: 1.5em;
-            margin: 20px 0;
+        .letter-envelope:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
         }
 
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 10px 10px 0 0;
+            border-bottom: 3px solid #ff6b6b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .envelope-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ffb700, #ff9ff3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ff6b6b;
+        }
+
+        .envelope-body {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: white;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2em;
+            z-index: 5;
+        }
+
+        /* Opened Letter Container */
         .letter-container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 50px 40px;
-            background: rgba(255, 255, 255, 0.95);
+            max-width: 100%;
+            height: 100vh;
+            width: 90%;
+            max-width: 800px;
+            padding: 60px 50px;
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
             color: #333;
             text-align: left;
             font-family: 'Georgia', serif;
-            max-height: 70vh;
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #ff6b6b #f0f0f0;
+            display: none;
+        }
+
+        .letter-container.open {
+            display: flex;
+            flex-direction: column;
         }
 
         .letter-container::-webkit-scrollbar {
@@ -74,6 +140,11 @@
 
         .letter-container::-webkit-scrollbar-thumb:hover {
             background: #ff5252;
+        }
+
+        .letter-content {
+            flex: 1;
+            overflow-y: auto;
         }
 
         .letter-header {
@@ -330,40 +401,53 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="letter-container">
-            <div class="letter-header">
-                ✨ A Special Birthday Letter ✨
+        <!-- Closed Letter Envelope -->
+        <div class="letter-envelope" onclick="openLetter()">
+            <div class="envelope-flap">
+                <div class="envelope-seal">R + S</div>
             </div>
-            <div class="letter-body">
-                <p>My Dearest,</p>
+            <div class="envelope-body">
+                💌 Click to open
+            </div>
+        </div>
 
-                <p>
-                    Today is a day dedicated entirely to you, and I wanted to take a moment to tell you just how special you are. Happy Birthday to the most amazing woman I know!
-                </p>
+        <!-- Opened Letter Content -->
+        <div class="letter-container">
+            <div class="letter-content">
+                <div class="letter-header">
+                    ✨ A Special Birthday Letter ✨
+                </div>
+                <div class="letter-body">
+                    <p>My Dearest,</p>
 
-                <p>
-                    From the moment we met, you brought so much light and joy into my life. Your smile can brighten even my darkest days, and your laughter is the most beautiful sound I could ever hear. You're not just my girlfriend—you're my best friend, my inspiration, and my reason to smile every single day.
-                </p>
+                    <p>
+                        Today is a day dedicated entirely to you, and I wanted to take a moment to tell you just how special you are. Happy Birthday to the most amazing woman I know!
+                    </p>
 
-                <p>
-                    On this special day, I want you to know how much you mean to me. Your kindness, your strength, your intelligence, and your beautiful heart are things I admire every single day. The way you care about the people you love, the way you pursue your dreams, and the way you make everyone around you feel valued—it all makes me fall in love with you more and more.
-                </p>
+                    <p>
+                        From the moment we met, you brought so much light and joy into my life. Your smile can brighten even my darkest days, and your laughter is the most beautiful sound I could ever hear. You're not just my girlfriend—you're my best friend, my inspiration, and my reason to smile every single day.
+                    </p>
 
-                <p>
-                    You deserve a day (and honestly, every day) filled with love, laughter, adventure, and all the happiness in the world. I promise to do my best to make sure you feel as cherished and loved as you deserve to be.
-                </p>
+                    <p>
+                        On this special day, I want you to know how much you mean to me. Your kindness, your strength, your intelligence, and your beautiful heart are things I admire every single day. The way you care about the people you love, the way you pursue your dreams, and the way you make everyone around you feel valued—it all makes me fall in love with you more and more.
+                    </p>
 
-                <p>
-                    Thank you for being exactly who you are. Thank you for letting me be a part of your life. Thank you for all the memories we've created together, and I'm so excited for all the beautiful moments we'll share in the future.
-                </p>
+                    <p>
+                        You deserve a day (and honestly, every day) filled with love, laughter, adventure, and all the happiness in the world. I promise to do my best to make sure you feel as cherished and loved as you deserve to be.
+                    </p>
 
-                <p>
-                    Here's to celebrating you today and every day. I love you more than words could ever express.
-                </p>
+                    <p>
+                        Thank you for being exactly who you are. Thank you for letting me be a part of your life. Thank you for all the memories we've created together, and I'm so excited for all the beautiful moments we'll share in the future.
+                    </p>
 
-                <div class="letter-signature">
-                    With all my love,<br>
-                    Your Love ❤️
+                    <p>
+                        Here's to celebrating you today and every day. I love you more than words could ever express.
+                    </p>
+
+                    <div class="letter-signature">
+                        With all my love,<br>
+                        Your Love ❤️
+                    </div>
                 </div>
             </div>
         </div>
@@ -396,6 +480,14 @@
                     input.classList.remove("shake");
                 }, 500);
             }
+        }
+
+        function openLetter() {
+            const envelope = document.querySelector(".letter-envelope");
+            const letterContainer = document.querySelector(".letter-container");
+            
+            envelope.style.display = "none";
+            letterContainer.classList.add("open");
         }
 
         function createFireworks() {
